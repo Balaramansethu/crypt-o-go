@@ -25,12 +25,6 @@ const NavigationControls = ({
     sort,
     setSort,
 }) => {
-    const location = useLocation()
-
-    if (location.pathname !== "/") {
-        return null
-    }
-
     return (
         <div className="nav-controls">
             <input
@@ -67,8 +61,6 @@ const NavigationComponent = () => {
     const [user, setUser] = useState(null)
     const [authChecked, setAuthChecked] = useState(false)
 
-    const { currentUser } = useAuth() || {}
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user)
@@ -103,7 +95,7 @@ const NavigationComponent = () => {
 
                     {authChecked ? (
                         user ? (
-                            <Link onClick={handleLogout}>
+                            <Link to="#" onClick={handleLogout}>
                                 <p>Logout</p>
                             </Link>
                         ) : (
@@ -120,22 +112,6 @@ const NavigationComponent = () => {
                         <p>Loading...</p>
                     )}
                 </div>
-
-                <Routes>
-                    <Route
-                        path="*"
-                        element={
-                            <NavigationControls
-                                search={search}
-                                setSearch={setSearch}
-                                filter={filter}
-                                setFilter={setFilter}
-                                sort={sort}
-                                setSort={setSort}
-                            />
-                        }
-                    />
-                </Routes>
             </div>
 
             <Routes>
@@ -145,11 +121,21 @@ const NavigationComponent = () => {
                         !authChecked ? (
                             <div className="loading">Loading...</div>
                         ) : user ? (
-                            <HomeComponent
-                                search={search}
-                                filter={filter}
-                                sort={sort}
-                            />
+                            <>
+                                <NavigationControls
+                                    search={search}
+                                    setSearch={setSearch}
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    sort={sort}
+                                    setSort={setSort}
+                                />
+                                <HomeComponent
+                                    search={search}
+                                    filter={filter}
+                                    sort={sort}
+                                />
+                            </>
                         ) : (
                             <Navigate to="/login" />
                         )
