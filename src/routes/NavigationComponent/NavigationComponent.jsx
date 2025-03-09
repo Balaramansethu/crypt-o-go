@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom"
 import HomeComponent from "../../components/HomeComponent/HomeComponent"
 import ContactUsComponent from "../../components/ContactUsComponent/ContactUsComponent"
 import AboutComponent from "../../components/AboutComponent/AboutComponent"
+import "../NavigationComponent/NavigationComponent.css"
 const NavigationComponent = () => {
     return (
         <Router>

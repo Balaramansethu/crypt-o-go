@@ -1,99 +1,58 @@
-.container {
-    /* max-width: 1140px; */
+.elements-container {
+    padding: 20px;
+}
+
+.elements-inside-card {
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: linear-gradient(135deg, #2a2d34, #3a3f47);
+    color: white;
+    max-width: 350px;
     margin: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.heading {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #26272b;
-    box-shadow: 0px 0px 12px #18191b;
-    border-radius: 8px;
-    margin: 1.9rem;
-    padding: .7rem 1rem;
-    font-weight: 700;
+.elements-inside-card p {
+    padding: 7px;
 }
-
-.coin-name {
-    margin-left: -4rem;
-}
-
-.coin-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 10px;
-    justify-content: space-between;
-}
-
-/* .coin-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background-color: #26272b;
-    box-sizing: border-box;
-    width: 20%;
-    box-shadow: 0px 0px 12px #18191b;
-    border-radius: 8px;
-    margin: 2rem 1rem;
-    flex-wrap: wrap;
-  } */
-
-/* .coin-row {
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-justify-content:center;
-background-color: #26272b;
-box-shadow: 0px 0px 12px #18191b;
-border-radius: 8px;
-margin: 2rem 1rem;
-width:fit-content;
-
-
-} */
 
 .elements-inside-card:hover {
-    transform: scale(1.04);
-    transition: .3s ease-in-out;
-    cursor: pointer;
-}
-
-img {
-    height: 40px;
-    margin-right: 8px;
-    width: auto;
+    transform: scale(1.05);
 }
 
 .img-symbol {
     display: flex;
     align-items: center;
-    padding-top: 10px;
-    padding-bottom: 5px;
-}
-
-.elements-inside-card{
-    display: flex;
     justify-content: center;
-    align-items: center;
-    float: inline-start;
-    flex-direction: column;
-    background-color: #26272b;
-    box-shadow: 0px 0px 12px #18191b;
-    border-radius: 8px;
-    margin: 2rem 1rem;
-    width:22.7%;
-    height:40%;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
+.img-symbol img {
+    width: 40px;
+    height: 40px;
+}
 
-@media screen and (max-width: 720px) {
+.hide-mobile {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .elements-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .elements-container {
+        grid-template-columns: 1fr;
+    }
+
     .hide-mobile {
         display: none;
     }
-}
-.coin-rows , p {
-    padding: 10px;
 }
