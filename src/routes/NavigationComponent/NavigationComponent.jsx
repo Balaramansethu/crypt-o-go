@@ -1,9 +1,58 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom"
+import {
+    BrowserRouter as Router,
+    Link,
+    Routes,
+    Route,
+    useLocation,
+} from "react-router-dom"
 import HomeComponent from "../../components/HomeComponent/HomeComponent"
 import ContactUsComponent from "../../components/ContactUsComponent/ContactUsComponent"
 import AboutComponent from "../../components/AboutComponent/AboutComponent"
 import "../NavigationComponent/NavigationComponent.css"
+
+const NavigationControls = ({
+    search,
+    setSearch,
+    filter,
+    setFilter,
+    sort,
+    setSort,
+}) => {
+    const location = useLocation()
+
+    if (location.pathname !== "/") {
+        return null
+    }
+
+    return (
+        <div className="nav-controls">
+            <input
+                type="text"
+                className="search-bar"
+                placeholder="Search by symbol or price..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+            />
+            <select
+                className="search-bar"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+            >
+                <option value="all">All</option>
+                <option value="gainers">Gainers (Price Increase)</option>
+            </select>
+            <select
+                className="search-bar"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+            >
+                <option value="price">Sort by Price</option>
+                <option value="market_cap">Sort by Market Cap</option>
+            </select>
+        </div>
+    )
+}
 
 const NavigationComponent = () => {
     const [search, setSearch] = useState("")
@@ -24,33 +73,21 @@ const NavigationComponent = () => {
                         <p>Contact us</p>
                     </Link>
                 </div>
-                <div className="nav-controls">
-                    <input
-                        type="text"
-                        className="search-bar"
-                        placeholder="Search by symbol or price..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                <Routes>
+                    <Route
+                        path="*"
+                        element={
+                            <NavigationControls
+                                search={search}
+                                setSearch={setSearch}
+                                filter={filter}
+                                setFilter={setFilter}
+                                sort={sort}
+                                setSort={setSort}
+                            />
+                        }
                     />
-                    <select
-                        className="search-bar"
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
-                    >
-                        <option value="all">All</option>
-                        <option value="gainers">
-                            Gainers (Price Increase)
-                        </option>
-                    </select>
-                    <select
-                        className="search-bar"
-                        value={sort}
-                        onChange={(e) => setSort(e.target.value)}
-                    >
-                        <option value="price">Sort by Price</option>
-                        <option value="market_cap">Sort by Market Cap</option>
-                    </select>
-                </div>
+                </Routes>
             </div>
             <Routes>
                 <Route
