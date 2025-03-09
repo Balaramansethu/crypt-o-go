@@ -1,27 +1,41 @@
-import React from "react";
-import "./HomeComponent.css"; 
-import ContentComponent from "../ContentComponent/ContentComponent";
+import React from "react"
+import "./HomeComponent.css"
+import { useEffect, useState } from "react"
+import ContentComponent from "../ContentComponent/ContentComponent"
+import axios from "axios"
 
-const HomeComponent = (props) => {
-  return (
-    <div className="main-container">
-      <div className='coin-row'>
-        {/* <div className="heading">
-          <p>Name</p>
-          <p className="coin-name">coin</p>
-          <p>Price</p>
-          <p>24h</p>
-          <p className="hide-mobile">Volume</p>
-          <p className="hide-mobile">Market</p>
-        </div> */}
-        {props.value && props.value.map((result, index) => (
-          <ContentComponent key={index} value={result} />
-        ))}
-      </div>
-    </div>
-  );
-};
+const HomeComponent = () => {
+    const [fetchApi, setFetchApi] = useState()
 
+    const handleApi = () => {
+        axios
+            .get(
+                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr"
+            )
+            .then((response) => {
+                setFetchApi(response.data)
+            })
+            .catch((error) => {
+                {
+                    error
+                }
+            })
+    }
 
+    useEffect(() => {
+        handleApi()
+    }, [])
 
-export default HomeComponent;
+    return (
+        <div className="main-container">
+            <div className="coin-row">
+                {fetchApi &&
+                    fetchApi.map((result, index) => (
+                        <ContentComponent key={index} value={result} />
+                    ))}
+            </div>
+        </div>
+    )
+}
+
+export default HomeComponent

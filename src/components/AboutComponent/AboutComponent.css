@@ -1,0 +1,10 @@
+.container-about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 100px;
+    letter-spacing: 1px;
+    line-height: 30px;
+}
+

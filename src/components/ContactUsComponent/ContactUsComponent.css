@@ -1,0 +1,14 @@
+.container-contact-us {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 100px;
+    letter-spacing: 1px;
+    line-height: 30px;
+}
+
+.address {
+    line-height: 20px;
+    padding-top: 50px;
+}
