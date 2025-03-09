@@ -1,14 +1,20 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
     BrowserRouter as Router,
     Link,
     Routes,
     Route,
     useLocation,
+    Navigate,
 } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
+import { onAuthStateChanged, signOut } from "firebase/auth"
+import { auth } from "../../../firebaseConfig"
 import HomeComponent from "../../components/HomeComponent/HomeComponent"
 import ContactUsComponent from "../../components/ContactUsComponent/ContactUsComponent"
 import AboutComponent from "../../components/AboutComponent/AboutComponent"
+import Signup from "../../components/SignupComponent/SignupComponent"
+import Login from "../../components/LoginComponent/LoginComponent"
 import "../NavigationComponent/NavigationComponent.css"
 
 const NavigationControls = ({
@@ -58,6 +64,28 @@ const NavigationComponent = () => {
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState("all")
     const [sort, setSort] = useState("price")
+    const [user, setUser] = useState(null)
+    const [authChecked, setAuthChecked] = useState(false)
+
+    const { currentUser } = useAuth() || {}
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setUser(user)
+            setAuthChecked(true)
+        })
+
+        return () => unsubscribe()
+    }, [])
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth)
+            setUser(null)
+        } catch (error) {
+            console.error("Logout failed:", error)
+        }
+    }
 
     return (
         <Router>
@@ -66,13 +94,33 @@ const NavigationComponent = () => {
                     <Link to="/">
                         <p>Home</p>
                     </Link>
-                    <Link to="about">
+                    <Link to="/about">
                         <p>About</p>
                     </Link>
-                    <Link to="contact">
+                    <Link to="/contact">
                         <p>Contact us</p>
                     </Link>
+
+                    {authChecked ? (
+                        user ? (
+                            <Link onClick={handleLogout}>
+                                <p>Logout</p>
+                            </Link>
+                        ) : (
+                            <>
+                                <Link to="/login">
+                                    <p className="pages">Login</p>
+                                </Link>
+                                <Link to="/signup">
+                                    <p className="pages">Signup</p>
+                                </Link>
+                            </>
+                        )
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </div>
+
                 <Routes>
                     <Route
                         path="*"
@@ -89,19 +137,28 @@ const NavigationComponent = () => {
                     />
                 </Routes>
             </div>
+
             <Routes>
                 <Route
                     path="/"
                     element={
-                        <HomeComponent
-                            search={search}
-                            filter={filter}
-                            sort={sort}
-                        />
+                        !authChecked ? (
+                            <div className="loading">Loading...</div>
+                        ) : user ? (
+                            <HomeComponent
+                                search={search}
+                                filter={filter}
+                                sort={sort}
+                            />
+                        ) : (
+                            <Navigate to="/login" />
+                        )
                     }
                 />
-                <Route path="about" element={<AboutComponent />} />
-                <Route path="contact" element={<ContactUsComponent />} />
+                <Route path="/about" element={<AboutComponent />} />
+                <Route path="/contact" element={<ContactUsComponent />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </Router>
     )
